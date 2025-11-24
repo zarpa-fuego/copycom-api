@@ -25,7 +25,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true) // ✅ Asegurar que prePostEnabled está en true
+@EnableMethodSecurity(prePostEnabled = true) // Asegurar que prePostEnabled está en true
 public class WebSecurityConfig {
 
     @Autowired
@@ -52,24 +52,25 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
 
-                // ✅ HABILITAR CORS con configuración personalizada
+                //  HABILITAR CORS con configuración personalizada
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // ✅ RUTAS PÚBLICAS (sin autenticación)
+                        //  RUTAS PÚBLICAS (sin autenticación)
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/test/public").permitAll()
+                        .requestMatchers("/api/pedido-consulta/**").permitAll()
                         .requestMatchers("/error").permitAll()
 
-                        // ✅ Todo lo demás requiere autenticación
+                        //  Todo lo demás requiere autenticación
                         // Los roles específicos se manejan con @PreAuthorize en los controllers
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
 
-                // ✅ Agregar el filtro JWT ANTES del filtro de autenticación
+                //  Agregar el filtro JWT ANTES del filtro de autenticación
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -82,31 +83,31 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // ✅ Permitir credenciales (cookies, headers de autorización)
+        //  Permitir credenciales (cookies, headers de autorización)
         configuration.setAllowCredentials(true);
 
-        // ✅ Orígenes permitidos (tu frontend Angular)
+        //  Orígenes permitidos (tu frontend Angular)
         configuration.setAllowedOriginPatterns(List.of(
                 "http://localhost:4200",
                 "http://127.0.0.1:4200"
         ));
 
-        // ✅ Headers permitidos (todos)
+        //  Headers permitidos (todos)
         configuration.setAllowedHeaders(List.of("*"));
 
-        // ✅ Métodos HTTP permitidos
+        //  Métodos HTTP permitidos
         configuration.setAllowedMethods(Arrays.asList(
                 "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"
         ));
 
-        // ✅ Headers expuestos al cliente
+        //  Headers expuestos al cliente
         configuration.setExposedHeaders(List.of(
                 "Authorization",
                 "Access-Control-Allow-Origin",
                 "Access-Control-Allow-Credentials"
         ));
 
-        // ✅ Tiempo de cache para preflight requests (1 hora)
+        //  Tiempo de cache para preflight requests (1 hora)
         configuration.setMaxAge(3600L);
 
         // Aplicar la configuración a todos los endpoints
