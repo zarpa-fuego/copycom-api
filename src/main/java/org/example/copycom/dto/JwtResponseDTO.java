@@ -1,0 +1,34 @@
+package org.example.copycom.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class JwtResponseDTO {
+    private String token;
+    private String type = "Bearer";
+    private Long id;
+    private String username;
+    private String email;
+    private String nombre;
+    private String apellido;
+    private List<String> roles;
+
+    public JwtResponseDTO(String token, Long id, String username, String email,
+                          String nombre, String apellido, List<String> roles) {
+        this.token = token;
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.roles = roles;
+    }
+}
