@@ -2,10 +2,11 @@ package org.example.copycom.controller;
 
 import org.example.copycom.dto.JwtResponseDTO;
 import org.example.copycom.dto.LoginRequestDTO;
-import org.example.copycom.dto.RegisterRequestDTO;
+import org.example.copycom.dto.UsuarioDto;
 import org.example.copycom.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +23,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequestDTO registerRequest) {
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<String> register(@RequestBody UsuarioDto registerRequest) {
         String message = authService.registerUser(registerRequest);
         return ResponseEntity.ok(message);
     }

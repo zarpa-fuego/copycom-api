@@ -59,7 +59,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         //  RUTAS PÚBLICAS (sin autenticación)
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/test/public").permitAll()
                         .requestMatchers("/api/pedido-consulta/**").permitAll()
                         .requestMatchers("/error").permitAll()

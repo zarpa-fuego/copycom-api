@@ -2,7 +2,7 @@ package org.example.copycom.service.impl;
 
 import org.example.copycom.dto.JwtResponseDTO;
 import org.example.copycom.dto.LoginRequestDTO;
-import org.example.copycom.dto.RegisterRequestDTO;
+import org.example.copycom.dto.UsuarioDto;
 import org.example.copycom.entity.RolEntity;
 import org.example.copycom.entity.UsuarioEntity;
 import org.example.copycom.repository.RolRepository;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -70,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String registerUser(RegisterRequestDTO registerRequest) {
+    public String registerUser(UsuarioDto registerRequest) {
         if (usuarioRepository.existsByUsername(registerRequest.getUsername())) {
             throw new RuntimeException("Error: El nombre de usuario ya está en uso!");
         }
