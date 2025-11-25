@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PedidoConsultaRepository extends JpaRepository<PedidoEntity, Long> {
 
-     PedidoEntity getPedidoEntityBySerieNumero(String serieNumero);
+     PedidoEntity getPedidoEntityByNumeroPedido(String numeroPedido);
 }

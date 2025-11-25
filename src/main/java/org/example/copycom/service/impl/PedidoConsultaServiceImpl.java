@@ -11,21 +11,31 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PedidoConsultaServiceImpl implements PedidoConsultaService {
-    private PedidoConsultaRepository pedidoConsultaRepository;
-    private PedidoConsultaMapper pedidoConsultaMapper;
+    private final PedidoConsultaRepository pedidoConsultaRepository;
+    private final PedidoConsultaMapper pedidoConsultaMapper;
 
     public PedidoConsultaServiceImpl(PedidoConsultaRepository pedidoConsultaRepository, PedidoConsultaMapper pedidoConsultaMapper) {
         this.pedidoConsultaRepository = pedidoConsultaRepository;
         this.pedidoConsultaMapper = pedidoConsultaMapper;
     }
 
+    @Override
     public PedidoConsultaDto getPedidoReportDtoBySerieNumero(String serieNumero) {
-        PedidoEntity pedido = this.pedidoConsultaRepository.getPedidoEntityBySerieNumero(serieNumero);
+        PedidoEntity pedido = this.pedidoConsultaRepository.getPedidoEntityByNumeroPedido(serieNumero);
 
         if (pedido == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido no encontrado");
         }
 
-        return this.pedidoConsultaMapper.pedidoEntityToPedidoDto(pedido);
+        PedidoConsultaDto dto = this.pedidoConsultaMapper.pedidoEntityToPedidoDto(pedido);
+        
+        // Convertir estadoPedido (String) a estadoProceso (Boolean)
+        if (pedido.getEstadoPedido() != null) {
+            dto.setEstadoProceso(pedido.getEstadoPedido().equals("COMPLETADO"));
+        } else {
+            dto.setEstadoProceso(false);
+        }
+        
+        return dto;
     }
 }
